@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>API documentation - DeepAR Android SDK</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="../css/highlight.css">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "API documentation";
+    var mkdocs_page_input_path = "api_documentation.md";
+    var mkdocs_page_url = "/api_documentation/index.html";
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js"></script>
+  <script src="../js/modernizr-2.8.3.min.js"></script>
+  <script type="text/javascript" src="../js/highlight.pack.js"></script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href="../index.html" class="icon icon-home"> DeepAR Android SDK</a>
+        
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../index.html">Home</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../installation/index.html">Installation</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../licensing/index.html">License Key</a>
+	    </li>
+          
+            <li class="toctree-l1 current">
+		
+    <a class="current" href="index.html">API documentation</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l2"><a href="#api-documentation">API documentation</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l3" href="#deepar">DeepAR</a></li>
+        
+            <li><a class="toctree-l3" href="#areventlistener">AREventListener</a></li>
+        
+            <li><a class="toctree-l3" href="#getting-the-face-coordinates">Getting the face coordinates</a></li>
+        
+            <li><a class="toctree-l3" href="#tracking-multiple-faces">Tracking multiple faces</a></li>
+        
+        </ul>
+    
+
+    </ul>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">DeepAR Android SDK</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>API documentation</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h2 id="api-documentation">API documentation</h2>
+<p>DeepAR.ai SDK functionality is exposed through the class called <code>DeepAR</code>.</p>
+<h3 id="deepar">DeepAR</h3>
+<h4 id="initialization">Initialization</h4>
+<p>DeepAR engine is contained in the class <code>DeepAR</code>. This class should be instantiated and the method <code>initialize</code> should be called before use. This is typically done in <code>onCreate</code> method in Android Activity. DeepAR engine uses <code>SurfaceView</code> to render 3D augmented reality elements. The SDK user is required to place the <code>SurfaceView</code> in the view hierarchy (through XML layout or manually from code). The user also needs to add a surface holder callback, for example: <code>surfaceView.getHolder().addCallback(this);</code>. </p>
+<p>Here's an example of how to use <code>SurfaceHolder.Callback</code> with DeepAR</p>
+<pre><code class="java">
+private DeepAR deepAR;
+...
+
+@Override
+public void surfaceCreated(SurfaceHolder surfaceHolder) {
+}
+
+@Override
+public void surfaceChanged(SurfaceHolder surfaceHolder, int format, int width, int height) {
+// Pass the surface object along with width and height to DeepAR instance. DeepAR object must be instantiated and initialized at this point.
+deepAR.setRenderSurface(surfaceHolder.getSurface(), width, height);
+}
+
+@Override
+public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
+// If the surface is destroyed, DeepAR engine must be notified by passing null as the Surface object. The rendering will be paused after this call.
+deepAR.setRenderSurface(null,0,0);
+}
+
+...
+
+}
+
+</code></pre>
+
+<h4 id="void-initializecontext-context-areventlistener-eventlistener">void initialize(Context context, AREventListener eventListener)</h4>
+<p>Initializes the DeepAR engine.</p>
+<h4 id="void-initializecontext-context-areventlistener-eventlistener-string-modelpath">void initialize(Context context, AREventListener eventListener, String modelPath)</h4>
+<p>Initializes the DeepAR engine. The modelPath parameter can be used if the model file is downloaded over the air. The model file is usually located in the assets folder. The default value for this parameter is <code>file:///android_asset/models.bin</code> and this value is used if modelPath is null. Other parameters are the same as above.</p>
+<h4 id="void-release">void release()</h4>
+<p>Releases all resources required by DeepAR. Must be called after the rendering surface is destroyed. It's usually called in <code>onDestroy</code> method in Android Activity.</p>
+<pre><code class="java">@Override
+protected void onDestroy() {
+super.onDestroy();
+deepAR.release();
+}
+
+</code></pre>
+
+<h4 id="void-receiveframebytebuffer-data-int-width-int-height-int-orientation-boolean-mirror">void receiveFrame(ByteBuffer data, int width, int height, int orientation, boolean mirror)</h4>
+<p>DeepAR implements FrameReceiver interface which consists of this method. It should be called for every frame received from the camera device. The parameter data should be image byte data in <a href="https://developer.android.com/reference/android/graphics/ImageFormat.html#NV21">NV21</a> format. ByteBuffer must be allocated using allocateDirect. 
+The orientation parameter is the camera sensor orientation, which can be read from CameraInfo object.</p>
+<h4 id="void-switcheffectstring-slot-string-path">void switchEffect(String slot, String path)</h4>
+<p>The method used to switch any effect in the scene. Effects are places in slots. Every slot is identified by its unique name and can hold one effect at any given moment. Every subsequent call to this method removes the effect that was previously displayed in this slot. To clear effect from a slot, call this method with <code>null</code> for path param.
+Using this method user can combine multiple effects in the scene, like using a face mask and a filter effect:
+When tracking multiple faces is enabled this method only affects the first tracked face.</p>
+<pre><code class="Java">
+deepAR.switchEffect(&quot;mask&quot;,&quot;file:///android_asset/flowers&quot;);
+deepAR.switchEffect(&quot;filters&quot;,&quot;file:///android_asset/tv80&quot;);
+
+</code></pre>
+
+<p>Slot parameters are arbitrary strings. The path parameter is a string path to an effect file in the project which has been exported from DeepAR Studio.</p>
+<h4 id="void-switcheffectstring-slot-string-path-int-face">void switchEffect(String slot, String path, int face)</h4>
+<p>This method is used to switch the effect, similar to the previous method. The face parameter is used when assigning the effect to a particular face. Different faces should use different slots such as "mask_f0" and "mask_f1" instead of "mask" in the previous example. DeepAR SDK supports tracking 4 faces in parallel (by default, SDK supports only one face - if you need more, please contact the support).</p>
+<pre><code class="Java">// apply flowers effect to the first face
+deepAR.switchEffect(&quot;mask_f0&quot;,&quot;file:///android_asset/flowers&quot;,0);
+// apply beard effect to the second face
+deepAR.switchEffect(&quot;mask_f1&quot;,&quot;file:///android_asset/beard&quot;,1);
+// replace the effect on the first face with the lion
+deepAR.switchEffect(&quot;mask_f0&quot;,&quot;file:///android_asset/lion&quot;,0);
+// remove the beard effect from the second face
+deepAR.switchEffect(&quot;mask_f1&quot;,null,1);
+
+</code></pre>
+
+<h4 id="void-switcheffectstring-slot-inputstream-inputstream">void switchEffect(String slot, InputStream inputStream)</h4>
+<p>Loads effect from the InputStream.</p>
+<h4 id="void-takescreenshot">void takeScreenshot()</h4>
+<p>Captures a screenshot of the current screen. Screenshot taking status can be observed if the <a href="#areventlistener">AREventListener</a> is set on DeepAR.</p>
+<h4 id="void-setfacedetectionsensitivityint-sensitivity">void setFaceDetectionSensitivity(int sensitivity)</h4>
+<p>This method allows the user to change face detection sensitivity. The sensitivity parameter can range from 0 to 3, where 0 is the fastest but might not recognize smaller (further away) faces, and 3 is the slowest but will find smaller faces. By default, this parameter is set to 1.</p>
+<h4 id="void-setareventlistenerareventlistener-listener">void setAREventListener(AREventListener listener)</h4>
+<p>Sets the <a href="#areventlistener">AREventListener</a> for <code>DeepAR</code> object.</p>
+<h4 id="void-setrendersurfacesurface-surface-int-width-int-height">void setRenderSurface(Surface surface, int width, int height)</h4>
+<p>Passes the render surface to DeepAR engine. The Surface is typically obtained in <code>onSurfaceChanged</code> method in <code>SurfaceHolder.Callback</code>. See <a href="#initialization">Initialization</a></p>
+<h4 id="void-setpausedboolean-paused">void setPaused(boolean paused)</h4>
+<p>Pauses/unpauses the rendering. This method will not release any resources and should be used only for temporary pause (e.g. user goes to the next screen). Use shutdown method to stop the engine and release the resources.</p>
+<h4 id="void-startvideorecordingstring-filepath">void startVideoRecording(String filePath)</h4>
+<p>Starts video recording of the camera preview. The video will be the same size as <code>SurfaceView</code>. Video recording events can be observed through  <a href="#areventlistener">AREventListener</a> implementation.</p>
+<h4 id="void-startvideorecordingstring-filepath-int-outputwidth-int-outputheight">void startVideoRecording(String filePath, int outputWidth, int outputHeight)</h4>
+<p>Starts video recording, the outputWidth, and outputHeight parameters can be used to specify output video resolution. The <code>SurfaceView</code> will be skewed to the desired resolution. To preserve the aspect ratio, enter the desired output width or height and set the other parameter to zero.</p>
+<pre><code class="Java">// Record video with width 300 and calculate height to preserve aspect ratio
+deepAR.startVideoRecording(Environment.getExternalStorageDirectory().toString() + File.separator + &quot;video.mp4&quot;, 300, 0);
+
+</code></pre>
+
+<h4 id="void-startvideorecordingstring-filepath-rect-subframe-int-outputwidth-int-outputheight">void startVideoRecording(String filePath, Rect subframe, int outputWidth, int outputHeight)</h4>
+<p>Starts video recording. The subframe parameter can be used to record only part of <code>SurfaceView</code>. The subframe Rect should be given in pixels</p>
+<pre><code class="Java">// Record the left half of the screen
+Rect subframe = new Rect();
+subframe.left = 0;
+subframe.right = deepAR.getRenderWidth();
+subframe.top = 0;
+subframe.bottom = deepAR.getRenderHeight();
+
+//width 300, height to be calculated
+deepAR.startVideoRecording(Environment.getExternalStorageDirectory().toString() + File.separator + &quot;video.mp4&quot;, subframe, deepAR.getRenderWidth()/2, deepAR.getRenderHeight());
+</code></pre>
+
+<h4 id="void-startvideorecordingstring-filepath-rect-subframe-int-outputwidth-int-outputheight-boolean-recordaudio">void startVideoRecording(String filePath, Rect subframe, int outputWidth, int outputHeight, boolean recordAudio)</h4>
+<p>Starts video recording. This method allows the audio recording to be enabled or disabled for a recording session. When using variants of this method without the recordAudio parameter, audio recording will be on by default. Other parameters work the same as the method above.</p>
+<h4 id="void-startvideorecordingstring-filepath-rect-subframe-int-outputwidth-int-outputheight-boolean-recordaudio-boolean-prepare">void startVideoRecording(String filePath, Rect subframe, int outputWidth, int outputHeight, boolean recordAudio, boolean prepare) {</h4>
+<p>Starts video recording. If prepare is true, the video recording is not started immediately, but instead, the SDK user needs to call startVideoRecording() to start the recording. This can be used to prepare the DeepAR SDK for recording in advance, so recording can start immediately after calling startVideoRecording(). Other parameters work the same as the method above.</p>
+<h4 id="void-startvideorecording">void startVideoRecording()</h4>
+<p>If the previous method was called with prepare=true, this method can be used to actually start the video recording.</p>
+<h4 id="void-stopvideorecording">void stopVideoRecording()</h4>
+<p>Stops video recording and starts the process of saving the recorded video to the file system. When the file is saved, the method <code>videoRecordingFinished</code> will be called.</p>
+<h4 id="void-setaudiomuteboolean-mute">void setAudioMute(boolean mute)</h4>
+<p>Mutes/unmutes the audio while video recording.</p>
+<h4 id="int-getbitrate-void-setbitrateint-bitrate">int getBitRate() / void setBitRate(int bitRate)</h4>
+<p>Gets or sets the video recording bit rate. The default is 0.15 * frame rate * width * height</p>
+<h4 id="int-getiframeinterval-void-setiframeintervalint-iframeinterval">int getiFrameInterval() / void setiFrameInterval(int iFrameInterval)</h4>
+<p>Gets or sets the I frame interval (MediaFormat.KEY_I_FRAME_INTERVAL) for video recording. The default is 5.</p>
+<h4 id="int-getkeyframerate-void-setkeyframerateint-keyframerate">int getKeyFrameRate() / void setKeyFrameRate(int keyFrameRate)</h4>
+<p>Gets or sets the key frame rate (MediaFormat.KEY_FRAME_RATE). The default is 25.</p>
+<h4 id="void-setantialiasinglevelint-level">void setAntialiasingLevel(int level)</h4>
+<p>Sets the MSAA level. The allowed levels are 0 (MSAA off), 2, 4, 8, 16. This should be called before initialize to have any effect.</p>
+<h4 id="void-changeparameterfloatstring-gameobject-string-component-string-parameter-float-val">void changeParameterFloat(String gameObject, String component, String parameter, float val)</h4>
+<p>This method allows the user to change float parameters during runtime. The method requires a Game Object name, Component name, Parameter name, and a float value.</p>
+<ul>
+<li>gameObject is the name of the Game Object in the hierarchy as visible in the Studio. The name should be unique for the method to work properly.</li>
+<li>component is the internal component type. </li>
+<li>parameter is the name or the parameter to be changed, for example, the name of the blendshape on a mesh. The parameter must exist for the component.</li>
+<li>floatValue is the new value to be applied to the parameter.</li>
+</ul>
+<pre><code class="Java">// Change the weight of the blendShape1.cuteBS blendshape on the Mesh Game Object. 
+deepAR.changeParameterFloat(&quot;Mesh&quot;, &quot;MeshRenderer&quot;, &quot;blendShape1.cuteBS&quot;, 5.0f);
+</code></pre>
+
+<h4 id="void-changeparametervec4string-gameobject-string-component-string-parameter-float-valx-float-valy-float-valz-float-valw">void changeParameterVec4(String gameObject, String component, String parameter, float valX, float valY, float valZ, float valW)</h4>
+<p>Same as above except the method takes four float values which represent one Vector4. Can be used to change material color. If multiple Game Objects share the same material, changing the parameter once for any Game Object using the material will change it for all Game Objects.
+To change a uniform on a material, such as color, the parameter must use the internal uniform name. These names can be found in the shader files.</p>
+<pre><code class="Java">// Change the color of the u_diffuseColor uniform (diffuse color for Standard shader) on the material applied to the Mesh Game Object to a semi-transparent green.        
+deepAR.changeParameterVec4(&quot;Mesh&quot;, &quot;DynamicMeshRenderer&quot;, &quot;u_diffuseColor&quot;, 0.0f, 1.0f, 0.0f, 0.25f);
+</code></pre>
+
+<h4 id="void-changeparametervec3string-gameobject-string-component-string-parameter-float-valx-float-valy-float-valz">void changeParameterVec3(String gameObject, String component, String parameter, float valX, float valY, float valZ)</h4>
+<p>Same as above except the method takes three float values which represent one Vector3. Can be used to change the transform of a Game Object at runtime. Rotations should be written as Euler angles in degrees. To set a parameter on GameObject, the component parameter should be an empty string.</p>
+<pre><code class="Java">// Change the position, rotation and scale of the RootNode game object   
+deepAR.changeParameterVec3(&quot;RootNode&quot;, &quot;&quot;, &quot;position&quot;, 0.06f, -0.02f, 0f);
+deepAR.changeParameterVec3(&quot;RootNode&quot;, &quot;&quot;, &quot;rotation&quot;, 0f, -30f, 0f);
+deepAR.changeParameterVec3(&quot;RootNode&quot;, &quot;&quot;, &quot;scale&quot;, 2f, 0.5f, 1f);
+</code></pre>
+
+<h4 id="void-changeparameterboolstring-gameobject-string-component-string-parameter-boolean-val">void changeParameterBool(String gameObject, String component, String parameter, boolean val)</h4>
+<p>Same as above except val takes a bool value. Can be used to disable or enable GameObjects at runtime. To set a parameter on GameObject, the component parameter should be an empty string..</p>
+<pre><code class="Java">// Disable the Mesh game object
+deepAR.changeParameterBool(&quot;Mesh&quot;, &quot;&quot;, &quot;enabled&quot;, false);
+</code></pre>
+
+<h4 id="void-changeparametertexturestring-gameobject-string-component-string-parameter-bitmap-image">void changeParameterTexture(String gameObject, String component, String parameter, Bitmap image)</h4>
+<p>This method allows the user to change the texture at runtime. The component should be "MeshRenderer". The parameter is the name of the texture that should be changed, this name can be found in the shader that is applied to the material/GameObject.</p>
+<pre><code class="Java">// Load texture
+Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.texture);
+
+// Change the texture of the material attached to Quad game object. s_texColor is the name of the texture uniform in the shader code.
+deepAR.changeParameterTexture(&quot;Quad&quot;, &quot;MeshRenderer&quot;, &quot;s_texColor&quot;, bitmap);
+</code></pre>
+
+<h4 id="void-firetriggerstring-trigger">void fireTrigger(String trigger)</h4>
+<p>This method allows the user to fire a custom animation trigger for model animations from code. To fire a custom trigger, the trigger string must match the custom trigger set in the Studio when creating the effect. </p>
+<h4 id="void-setlicensekeystring-key">void setLicenseKey(String key)</h4>
+<p>The method used to set the license key for your project. The license key is linked to the applicationId it's created for. Tracking will not work unless a matching license key and applicationId are used.</p>
+<h4 id="facetrackedcallback-getfacetrackedcallback-void-setfacetrackedcallbackfacetrackedcallback-facetrackedcallback">FaceTrackedCallback getFaceTrackedCallback() / void setFaceTrackedCallback(FaceTrackedCallback faceTrackedCallback)</h4>
+<p>Gets or sets the callback function for handling face coordinate data for a single tracked face, see <a href="#getting-the-face-coordinates">Getting the face coordinates</a></p>
+<h3 id="areventlistener">AREventListener</h3>
+<p>Listener for asynchronous actions returned from the  <a href="#deepar">DeepAR</a> class like receiving screenshot results etc. All listener methods are called on the main thread.</p>
+<h4 id="void-initialized">void initialized()</h4>
+<p>Called when the DeepAR is initialized. DeepAR methods should not be called before the initialization is completed.</p>
+<h4 id="void-screenshottakenbitmap-screenshot">void screenshotTaken(Bitmap screenshot)</h4>
+<p>Called when the screen capture is finished. The result is given as an Android Bitmap object.</p>
+<h4 id="void-facevisibilitychangedboolean-facevisible">void faceVisibilityChanged(boolean faceVisible)</h4>
+<p>Called when the user's face becomes visible or invisible. This event can be used to show a hint to the user to position the face in the camera field of view.</p>
+<h4 id="void-videorecordingstarted">void videoRecordingStarted()</h4>
+<p>The start of the video recording process is not synchronous, so this method will be called when the video recording is started.</p>
+<h4 id="void-videorecordingfinished">void videoRecordingFinished()</h4>
+<p>Called when the video recording is finshed.</p>
+<h4 id="void-shutdownfinished">void shutdownFinished()</h4>
+<p>Called when engine shutdown is finished after calling release().</p>
+<h4 id="void-videorecordingfailed">void videoRecordingFailed()</h4>
+<p>Called if the video recording fals.</p>
+<h4 id="void-errorstring-error">void error(String error)</h4>
+<p>Called when an error occurs - like the model path not found or the effect file failed to load.</p>
+<h4 id="void-effectswitchedstring-slot">void effectSwitched(String slot)</h4>
+<p>Called when an effect has been switched on a slot given by the <code>slot</code>  parameter. </p>
+<h4 id="void-imagevisibilitychangedstring-gameobjectname-boolean-imagevisible">void imageVisibilityChanged(String gameObjectName, boolean imageVisible)</h4>
+<p>Called when a natural image is being tracked and the visibility has changed. The <code>gameObjectName</code> contains the name of the game object with the Natural image position component attached and the current visibility is given by the <code>imageVisible</code> parameter.</p>
+<h3 id="getting-the-face-coordinates">Getting the face coordinates</h3>
+<p>The user can get the raw face coordinates if needed. The coordinates are packed in the <code>FaceData</code> class</p>
+<pre><code>public static class FaceData {
+
+// True if the face is visible in the current frame, false otherwise
+public boolean faceDetected;
+
+// Translation and rotation (euler angles in degrees) of the face center in 3D coordinates (x,y,z), calculated based on the vertical field of view of 50 degrees
+public float[] translation;
+public float[] rotation;
+
+// The pose matrix 4x4 containing the face translation and rotation.
+public float[] poseMatrix;
+
+// 68 face landmarks in 3D space, relative to the face center (x1,y1,z1,x2,y2,z2,...)
+public float[] landmarks;
+
+// 68 face landmarks in image space (pixels) (x1,y1,x2,y2,...)
+public float[] landmarks2d;
+
+// Rectangle covering the face in viewport coordinates, normalized to the [-1, 1] range (x, y, width, height)
+public float[] faceRect;
+
+...
+</code></pre>
+
+<p>To get the <code>FaceData</code> instance, the user needs to call <code>setFaceTrackedCallback</code>. Here's an example</p>
+<pre><code>deepAR.setFaceTrackedCallback(new DeepAR.FaceTrackedCallback() {
+@Override
+public void faceTracked(DeepAR.FaceData faceData) {
+
+}
+});
+</code></pre>
+
+<p>To stop getting the face data, simply call <code>setFaceTrackedCallback</code> with a null parameter.</p>
+<p>The <code>FaceTrackedCallback.faceTracked</code> will be called on each rendered frame. The user can get the face data even if the renderer is not running (e.g. the surface was never passed to the DeepAR instance). In that case, the face tracking needs to be initialized beforehand. Here's an example:</p>
+<pre><code>deepAR.initializeFaceTracking(CameraResolutionPreset.P640x480, null);
+</code></pre>
+
+<h3 id="tracking-multiple-faces">Tracking multiple faces</h3>
+<p>By default, SDK supports only one face, if you need this feature to be enabled, please contact the support</p>
+<p>When working with multiple faces use the <code>void switchEffect(String slot, String path, int face)</code> method to apply face tracking effects such as masks to the desired face. The <code>void switchEffect(String slot, String path)</code> method applies the effect to the first face (index 0) and should not be used for applying face tracking effects, but for code readability, it is still recommended for camera space effects such as filters there should only be one of. 
+Different faces should use different slots such as "mask_f0" and "mask_f1" instead of "mask" to avoid possible conflicts.</p>
+<p>Correct usage:</p>
+<pre><code class="Java">// apply flowers effect to the first face
+deepAR.switchEffect(&quot;mask_f0&quot;,&quot;file:///android_asset/flowers&quot;,0);
+// apply tv80 filter, internally it is assigned to the first face
+deepAR.switchEffect(&quot;filters&quot;,&quot;file:///android_asset/tv80&quot;);
+// apply beard effect to the second face
+deepAR.switchEffect(&quot;mask_f1&quot;,&quot;file:///android_asset/beard&quot;,1);
+// replace the effect on the first face with the lion
+deepAR.switchEffect(&quot;mask_f0&quot;,&quot;file:///android_asset/lion&quot;,0);
+// remove the beard effect from the second face
+deepAR.switchEffect(&quot;mask_f1&quot;,null,1);
+// remove the lion effect from the first face
+deepAR.switchEffect(&quot;mask_f0&quot;,null,0);
+// remove the tv80 filter
+deepAR.switchEffect(&quot;filters&quot;, null);
+</code></pre>
+
+<p>Not recommended :</p>
+<pre><code class="Java">// apply flowers effect to the first face
+// not clear since the face was not explicitly given
+deepAR.switchEffect(&quot;mask_f0&quot;,&quot;file:///android_asset/flowers&quot;);
+// apply tv80 filter, explicitlly assigning it to the first face
+//reduces code readability since filter effects affect the whole screen
+deepAR.switchEffect(&quot;filters&quot;,&quot;file:///android_asset/tv80&quot;, 0);
+</code></pre>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="../licensing/index.html" class="btn btn-neutral" title="License Key"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../licensing/index.html" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js"></script>
+
+</body>
+</html>

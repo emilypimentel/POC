@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>Installation - DeepAR Android SDK</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="../css/highlight.css">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Installation";
+    var mkdocs_page_input_path = "installation.md";
+    var mkdocs_page_url = "/installation/index.html";
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js"></script>
+  <script src="../js/modernizr-2.8.3.min.js"></script>
+  <script type="text/javascript" src="../js/highlight.pack.js"></script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href="../index.html" class="icon icon-home"> DeepAR Android SDK</a>
+        
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../index.html">Home</a>
+	    </li>
+          
+            <li class="toctree-l1 current">
+		
+    <a class="current" href="index.html">Installation</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l2"><a href="#deepar-android-sdk-installation">DeepAR Android SDK - Installation</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l3" href="#usage-requirements">Usage requirements</a></li>
+        
+        </ul>
+    
+
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../licensing/index.html">License Key</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../api_documentation/index.html">API documentation</a>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">DeepAR Android SDK</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Installation</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h2 id="deepar-android-sdk-installation">DeepAR Android SDK - Installation</h2>
+<p>Android platform SDK is distributed as an aar library. Following are the steps to include the library inside your project:</p>
+<ul>
+<li>Import the <code>deepar.aar</code> file to your application lib folder</li>
+<li>In Android Studio open Project Structure dialog (File -&gt; Project Structure...)</li>
+<li>In Project Structure Dialog click "+" button and choose "Import .JAR/.AAR package" option then click Next</li>
+<li>In the following dialog navigate to deepar.aar file in your libs directory under the "File name" option then click Finish</li>
+<li>Close all dialogs and Sync the project. Gradle should automatically offer the option since the settings.gradle file has changed and now it should contain the following line:</li>
+</ul>
+<p><code>include ':deepar'</code></p>
+<ul>
+<li>
+<p>Check again Project Structure if the application module has new dependency to deepar. If not add it manually. Under dependency window click "+" -&gt; Module dependency -&gt; deepar -&gt; click ok.</p>
+</li>
+<li>
+<p>Your appliciations gradle.build file should also include new entry in the dependencies section:</p>
+</li>
+</ul>
+<p><code>implementation project(':deepar')</code></p>
+<p>For a quick start on how to use the library check out the provided ExampleApp implementation.</p>
+<h3 id="usage-requirements">Usage requirements</h3>
+<h4 id="hardware">Hardware</h4>
+<p>DeepAR Android SDK supports devices with Android API level 21 and higher. Other minimum hardware requirements are:</p>
+<ul>
+<li>2 GB RAM</li>
+<li>Quad Core 1.3 GHz processor</li>
+<li>Launch year 2015+</li>
+</ul>
+<p>Supported input image resolutions for DeepAR SDK are:</p>
+<ul>
+<li>640x360</li>
+<li>640x480</li>
+<li>1280x720</li>
+</ul>
+<p>Devices must be equipped with cameras that support at least one of the mentioned resolution.</p>
+<h4 id="permissions">Permissions</h4>
+<p>SDK itself doesn't check for Android permissions but certain ones are required for the library to work correctly. Following are the required permissions:</p>
+<ul>
+<li>Camera - <code>Manifest.permission.CAMERA</code></li>
+<li>External file storage - <code>Manifest.permission.WRITE_EXTERNAL_STORAGE</code></li>
+<li>Autofocus - <code>android.hardware.camera.autofocus</code></li>
+<li>Record audio - <code>android.permission.RECORD_AUDIO</code></li>
+</ul>
+<p>It is the responsibility of user provide required permissions before using the library in the code. Within the <code>ExampleApp</code> code we provide the utility class <code>PermissionActivity</code> which implements permission check and request functionalities.</p>
+<h4 id="camera-feed">Camera feed</h4>
+<p>It is the user's responsibility to provide feed from the camera as input for the library. For this purpose, you can use the functionality of <code>CameraGrabber</code> class that is provided by the library. However, the class has limited functionality and may not fit your use case, therefore the source code for <code>CameraGrabber</code> has been provided in the example project and user can modify it to their needs.</p>
+<h4 id="proguard">ProGuard</h4>
+<p>If you're using ProGuard, include this rule:</p>
+<p><code>-keepclassmembers class ai.deepar.ar.DeepAR { *; }</code></p>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../licensing/index.html" class="btn btn-neutral float-right" title="License Key">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../index.html" class="btn btn-neutral" title="Home"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../index.html" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../licensing/index.html" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js"></script>
+
+</body>
+</html>
