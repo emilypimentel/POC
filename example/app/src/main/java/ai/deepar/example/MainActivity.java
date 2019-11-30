@@ -150,7 +150,7 @@ public class MainActivity extends PermissionsActivity implements AREventListener
         deepAR = new DeepAR(this);
         deepAR.setAntialiasingLevel(4);
 
-        //deepAR.setLicenseKey("YOUR_API_KEY");
+        deepAR.setLicenseKey("4b3a1eb070e787e28c830b68982e7f1c82eeb637b04d3465359032d96de78c611955a718270c929b");
 
         deepAR.initialize(this, this);
     }

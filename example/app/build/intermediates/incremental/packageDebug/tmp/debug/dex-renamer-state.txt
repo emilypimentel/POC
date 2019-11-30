@@ -1,4 +1,4 @@
-#Fri Nov 29 18:54:11 EST 2019
+#Fri Nov 29 20:11:38 EST 2019
 base.0=C\:\\Users\\Emily\\Documents\\Development\\WorkSpace\\builds\\DeepAR-Android-v1.4.5\\example\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\out
 path.1=classes.dex
 renamed.1=classes2.dex
